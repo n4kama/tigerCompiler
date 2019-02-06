@@ -15,7 +15,7 @@
 
 INTEGER [0-9]+
 
-STRING "[^"]" //FIXME
+STRING \"(\\.|[^"\\])*\"
 
 ID [a-zA-Z][0-9a-z-A-Z_]*
 
