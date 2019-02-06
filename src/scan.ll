@@ -1,13 +1,7 @@
 %{
-#include <iostream>
+    #include "scan.hh"
+    #include <iostream>
 %}
-
-enum yystype
-{
-    INTEGER, STRING, ID, COMMA, COLON, SEMICOLON, LPARENTHESIS, RPARENTHESIS, LBRACKET,
-    RBRACKET, LBRACE, RBRACE, DOT, PLUS, MINUS, TIMES, SLASH, EQ, NEQ, LT, LE, GT, GE,
-    AND, OR, ASSIGN ,ERROR
-};
 
 /* Flex Options */
 %option debug
