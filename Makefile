@@ -1,14 +1,12 @@
 CXX = g++
 CXXFLAGS = -std=c++17
 
-EXEC =
-SRC =
-EXEC_OBJS=
 
-all: $(EXEC) $(SRC)
 
-$(EXEC): $(EXEC_OBJS)
-        $(CXX) $(CXXFLAGS) -o $@ $(SRC)
+all:
+	bison -o src/parse.cc src/parse.yy
+    flex -o src/scan.cc src/scan.ll
+    g++ -std=c++17 -o tc src/scan.cc src/parse.cc
 
 clean:
-        $(RM) $(EXEC) $(EXEC_OBJS)
+        $(RM) tc
