@@ -37,11 +37,11 @@
 
 %%
 
-program : exp { std::cout << "tokens : " << $1; };
+program : exp { std::cout << "tokens : " << $1; }
 
-exp : "nil" | INTEGER | STRING { $$ = $1; };
+exp : op | INTEGER | STRING { $$ = $1; }
 
-op : PLUS | MINUS | TIMES | SLASH | EQ | NEQ | GT | LT | GE | LE | AND | { $$ = $1; };
+op : PLUS | MINUS | TIMES | SLASH | EQ | NEQ | GT | LT | GE | LE | AND { $$ = $1; }
 
 %%
 
