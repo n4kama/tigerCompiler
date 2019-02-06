@@ -37,9 +37,9 @@
 
 %%
 
-program : exp { std::cout << "tokens : " << $1; }
+program : program program | exp { std::cout << "(bigR < dbz < naruto) et tokens : " << $1 << "\n"; }
 
-exp : op | INTEGER | STRING { $$ = $1; }
+exp : op | INTEGER | STRING | ID { $$ = $1; }
 
 op : PLUS | MINUS | TIMES | SLASH | EQ | NEQ | GT | LT | GE | LE | AND { $$ = $1; }
 
