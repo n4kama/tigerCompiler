@@ -5,9 +5,7 @@
     int yyparse();
     int yylex();
     int yyerror(std::string s);
-}%
-
-%option noyywrap
+%}
 
 %token INTEGER
 %token STRING
@@ -47,7 +45,7 @@ op : PLUS | MINUS | TIMES | SLASH | EQ | NEQ | GT | LT | GE | LE | AND | { $$ = 
 
 %%
 
-int yyerror(std::string s);
+int yyerror(std::string s)
 {
     printf("yyerror : %s\n", s);
     return 0;
