@@ -1,0 +1,4 @@
+src/scan.cc
+src/parse.cc
+tc
+.vscode

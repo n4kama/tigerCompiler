@@ -7,6 +7,8 @@
     int yyerror(std::string s);
 }%
 
+%option noyywrap
+
 %token INTEGER
 %token STRING
 %token ID
@@ -37,7 +39,11 @@
 
 %%
 
+program : exp { std::cout << "tokens : " << $1; };
 
+exp : "nil" | INTEGER | STRING { $$ = $1; };
+
+op : PLUS | MINUS | TIMES | SLASH | EQ | NEQ | GT | LT | GE | LE | AND | { $$ = $1; };
 
 %%
 
