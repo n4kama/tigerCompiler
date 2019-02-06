@@ -22,6 +22,7 @@ ID [a-zA-Z][0-9a-z-A-Z_]*
 %%
 {INTEGER}       { yylval = atoi(yytext); return INTEGER;}
 {STRING}        { return STRING;}
+{ID}            { return ID;}
 ","             { return COMMA; }
 ":"             { return COLON; }
 ";"             { return SEMICOLON; }
@@ -45,5 +46,5 @@ ID [a-zA-Z][0-9a-z-A-Z_]*
 "&"             { return AND; }
 "|"             { return OR; }
 ":="            { return ASSIGN; }
-.      {}
+.               { return ERROR;}
 %%
