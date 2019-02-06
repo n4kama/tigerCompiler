@@ -13,8 +13,8 @@ ID [a-zA-Z][0-9a-zA-Z_]*
 
 %%
 [ \t\n]+        ;
-{INTEGER}       { yylval = atoi(yytext); return INTEGER;}
-{STRING}        { return STRING;}
+{INTEGER}       { yylval = atoi(yytext); return INT;}
+{STRING}        { return STR;}
 {ID}            { return ID;}
 ","             { return COMMA; }
 ":"             { return COLON; }
