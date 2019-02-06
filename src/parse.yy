@@ -47,7 +47,7 @@ op : PLUS | MINUS | TIMES | SLASH | EQ | NEQ | GT | LT | GE | LE | AND { $$ = $1
 
 int yyerror(std::string s)
 {
-    printf("yyerror : %s\n", s);
+    std::cout << "yyerror :" << s << '\n';
     return 0;
 }
 
