@@ -36,13 +36,17 @@
 
 %printer { yyo << $$; } <int>;
 
-%precedence "do" "else" "of" ":="
+%nonassoc ":="
 %left "|"
 %left "&"
-%precedence "<=" ">=" "=" "<>" "<" ">"
+%nonassoc "<=" ">=" "=" "<>" "<" ">"
 %left "+" "-"
 %left "*" "/"
-
+%left "."
+%nonassoc "of"
+%nonassoc "do"
+%nonassoc NOT_ELSE
+%nonassoc "else"
 
 %%
 
@@ -69,16 +73,13 @@ exp :
 	| exp op exp
 	| "(" exps ")"
 	| lvalue ":=" exp
-	| "if" exp "then" exp ctrl_else
+  | "if" exp "then" exp %prec NOT_ELSE
+	| "if" exp "then" exp "else" exp
   | "while" exp "do" exp
 	| "for" type-id ":=" exp "to" exp "do" exp
 	| "break"
   | "let" decs "in" exps "end" ;
 
-
-ctrl_else :
-    "else" exp
-    | %empty ;
 
 func_call :
     exp func_call_bis
