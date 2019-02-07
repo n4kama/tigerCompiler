@@ -37,7 +37,6 @@
 %printer { yyo << $$; } <int>;
 
 %precedence "do" "else" "of" ":="
-
 %left "|"
 %left "&"
 %precedence "<=" ">=" "=" "<>" "<" ">"
@@ -73,8 +72,9 @@ exp :
 	| "if" exp "then" exp ctrl_else
   | "while" exp "do" exp
 	| "for" type-id ":=" exp "to" exp "do" exp
-  | "break"
+	| "break"
   | "let" decs "in" exps "end" ;
+
 
 ctrl_else :
     "else" exp
@@ -95,7 +95,6 @@ arr_rec_bis :
 array_rec :
     type-id "=" exp arr_rec_bis
   	| %empty ;
-
 
 lvalue : type-id
  	  | lvalue "." type-id
