@@ -60,18 +60,18 @@ exp :
  	| STRING
 
 //good
- 	| type-id "[" exp "]" "of" exp
+ 	| lvalue_left "of" exp
  	| type-id "{" array_rec "}"
  	| "new" type-id
   | lvalue
 	| type-id "(" func_call ")"
-  | lvalue "." type-id "(" func_call ")"
+ 	| lvalue "." type-id "(" func_call ")"
 	| "-" exp
 	| exp op exp
 	| "(" exps ")"
 	| lvalue ":=" exp
 	| "if" exp "then" exp ctrl_else
-  | 	"while" exp "do" exp
+  | "while" exp "do" exp
 	| "for" type-id ":=" exp "to" exp "do" exp
   | "break"
   | "let" decs "in" exps "end" ;
@@ -99,7 +99,9 @@ array_rec :
 
 lvalue : type-id
  	  | lvalue "." type-id
-  	| lvalue "[" exp "]" ;
+  	| lvalue_left ;
+
+lvalue_left : lvalue "[" exp "]" ;
 
 exps : exps_rec ;
 
