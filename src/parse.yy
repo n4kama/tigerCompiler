@@ -1,78 +1,73 @@
+%expect 0
 %require "3.0"
 %language "C++"
+%define api.value.type variant
+%define api.token.constructor
+%define api.token.prefix {TOK_}
+%define parse.trace
+%locations
+%parse-param {int& res}
+%param {int& err_nb}
 
-//%language "c++"
-//%define api.value.type variant
-//%define api.token.constructor
+%code provides
+{
+    #define YY_DECL yy::parser::symbol_type yylex(int& err_nb)
+    extern FILE *yyin;
+    YY_DECL;
+}
+
 %{
+    extern int yy_flex_debug;
     # include <cerrno>
     # include <climits>
     # include <cstdlib>
     # include <cstring>
     # include <string>
-    #define YYSTYPE int
+    # include <cstdio>
     int yyparse();
-    int yylex();
-    int yyerror(std::string s);
-    FILE *yyin;
 %}
 
-%token INTEGER
-%token STRING
-%token ID
-%token COMMA
-%token COLON
-%token SEMICOLON
-%token LPARENTHESIS
-%token RPARENTHESIS
-%token LBRACKET
-%token RBRACKET
-%token LBRACE
-%token RBRACE
-%token DOT
-%token PLUS
-%token MINUS
-%token TIMES
-%token SLASH
-%token EQ
-%token NEQ
-%token LT
-%token LE
-%token GT
-%token GE
-%token AND
-%token OR
-%token ASSIGN
-%token ERROR
+%token <std::string>    STRING  "string"
+%token <std::string>    ID      "identifier"
+%token <int>            INTEGER "integer"
+%token EOF 0 "end-of-file"
+%token EOL "end-of-line"
+
 
 %%
 
-program : program program | exp { std::cout << "(bigR < dbz < naruto) et tokens : " << $1 << "\n"; }
+program : int | str | id | program EOL ;
+int : INTEGER ;
+str : STRING ;
+id  : ID ;
 
-exp : op | INTEGER | STRING | ID { $$ = $1; }
-
-op : PLUS | MINUS | TIMES | SLASH | EQ | NEQ | GT | LT | GE | LE | AND { $$ = $1; }
 
 %%
 
-int yyerror(std::string s)
+void yy::parser::error(const location_type& loc, const std::string& err)
 {
-    std::cout << "yyerror :" << s << '\n';
-    return 0;
+    err_nb += 1;
+    std::cerr << "line: " << loc << ", yyerror: " << err << '\n';
 }
 
 int main(int argc, char *argv[])
 {
-    if (argc == 1)
+  auto res = 0;
+  auto err = 0;
+  yy::parser parser(res, err);
+
+  if (getenv("SCAN"))
     {
-        yyparse();
+      yy_flex_debug = 1;
     }
 
-    if (argc == 2)
-    {
-        yyin = fopen(argv[1], "r");
-        yyparse();
-    }
+  if (getenv("PARSE"))
+    parser.set_debug_level(1);
 
-    return 0;
+    for(int i = 1; i < argc; i++)
+    {
+        yyin = fopen(argv[1],"r");
+          parser.parse();
+    }
+      return 0;
 }
