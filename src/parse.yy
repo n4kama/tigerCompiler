@@ -1,10 +1,20 @@
+%require "3.0"
+%language "C++"
+
+//%language "c++"
+//%define api.value.type variant
+//%define api.token.constructor
 %{
-    #include <iostream>
-    #include <string>
+    # include <cerrno>
+    # include <climits>
+    # include <cstdlib>
+    # include <cstring>
+    # include <string>
     #define YYSTYPE int
     int yyparse();
     int yylex();
     int yyerror(std::string s);
+    FILE *yyin;
 %}
 
 %token INTEGER
@@ -51,8 +61,18 @@ int yyerror(std::string s)
     return 0;
 }
 
-int main(void)
+int main(int argc, char *argv[])
 {
-    yyparse();
+    if (argc == 1)
+    {
+        yyparse();
+    }
+
+    if (argc == 2)
+    {
+        yyin = fopen(argv[1], "r");
+        yyparse();
+    }
+
     return 0;
 }
