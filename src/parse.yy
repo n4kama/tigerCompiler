@@ -64,10 +64,10 @@ int main(int argc, char *argv[])
   if (getenv("PARSE"))
     parser.set_debug_level(1);
 
-    for(int i = 1; i < argc; i++)
-    {
-        yyin = fopen(argv[1],"r");
-          parser.parse();
-    }
-      return 0;
+	for(int i = 1; i < argc; i++)
+	{
+		yyin = fopen(argv[1],"r");
+  		parser.parse();
+	}
+  	return 0;
 }

@@ -1,4 +1,4 @@
-/* Lexer /
+/* Lexer */
 
 %option noyywrap
 %option noinput
@@ -14,7 +14,7 @@
 %}
 
 int [0-9]+
-string """([^\]|\.)"""
+string "\""([^\\]|\\.)*"\""
 id [a-zA-Z][0-9a-zA-Z_]*
 
 %%
