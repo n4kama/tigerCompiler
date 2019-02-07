@@ -1,4 +1,5 @@
 src/scan.cc
 src/parse.cc
+src/location.hh
 tc
 .vscode

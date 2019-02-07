@@ -1,1 +1,21 @@
-README
+----------------------------------- README ------------------------------------
+
+Description
+-----------
+
+tc is a Tiger compiler wrtitten in c++ (Flex and Bison also).
+
+Usage
+-----
+
+make
+
+    ./tc <file>
+OR
+    cat <file> | ./tc
+
+How to run the testsuite:
+           #FIXME
+
+How to generate the documentation:
+           #FIXME
