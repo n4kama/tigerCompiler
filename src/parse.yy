@@ -36,13 +36,13 @@
 
 %printer { yyo << $$; } <int>;
 
+%precedence "do" "else" "of" ":="
 
 %left "|"
 %left "&"
 %precedence "<=" ">=" "=" "<>" "<" ">"
 %left "+" "-"
 %left "*" "/"
-
 
 
 %%
@@ -56,25 +56,25 @@ program :
 exp :
 //good
 	"nil"
-  	| int
-  	| STRING
+ 	| int
+ 	| STRING
 
 //good
-  	| type-id "[" exp "]" "of" exp
-  	| type-id "{" array_rec "}"
-  	| "new" type-id
-	| lvalue
-  	| type-id "(" func_call ")"
-  	| lvalue "." type-id "(" func_call ")"
+ 	| type-id "[" exp "]" "of" exp
+ 	| type-id "{" array_rec "}"
+ 	| "new" type-id
+  | lvalue
+	| type-id "(" func_call ")"
+  | lvalue "." type-id "(" func_call ")"
 	| "-" exp
 	| exp op exp
 	| "(" exps ")"
 	| lvalue ":=" exp
 	| "if" exp "then" exp ctrl_else
-| 	"while" exp "do" exp
+  | 	"while" exp "do" exp
 	| "for" type-id ":=" exp "to" exp "do" exp
-  	| "break"
-  	| "let" decs "in" exps "end" ;
+  | "break"
+  | "let" decs "in" exps "end" ;
 
 ctrl_else :
     "else" exp
@@ -90,7 +90,7 @@ func_call_bis :
 
 arr_rec_bis :
     "," type-id "=" exp arr_rec_bis
-  | %empty ;
+    | %empty ;
 
 array_rec :
     type-id "=" exp arr_rec_bis
@@ -98,7 +98,7 @@ array_rec :
 
 
 lvalue : type-id
- 	| lvalue "." type-id
+ 	  | lvalue "." type-id
   	| lvalue "[" exp "]" ;
 
 exps : exps_rec ;
@@ -109,29 +109,29 @@ exps_rec :
 
 exps_bis :
 	";" exp exps_bis
-	| %empty ;
+	  | %empty ;
 
 decs : dec decs
-	| %empty ;
+	  | %empty ;
 
 dec :
     "type" type-id "=" ty
-  | "class" type-id  extend_rec  "{" classfields "}"
-  | vardec
-  | "function" type-id "(" tyfields ")"  type_rec  "=" exp
-  | "primitive" type-id "(" tyfields ")"  type_rec
-  | "import" STRING ;
+    | "class" type-id  extend_rec  "{" classfields "}"
+    | vardec
+    | "function" type-id "(" tyfields ")"  type_rec  "=" exp
+    | "primitive" type-id "(" tyfields ")"  type_rec
+    | "import" STRING ;
 
 extend_rec : "extends" type-id
-	| %empty ;
+	  | %empty ;
 
 type_rec : ":" type-id
-	| %empty ;
+	  | %empty ;
 
 vardec : "var" type-id  type_rec ":=" exp ;
 
 classfields :  classfield classfields
-	| %empty ;
+	  | %empty ;
 
 classfield :
     vardec
