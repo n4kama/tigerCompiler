@@ -27,112 +27,131 @@
     int yyparse();
 %}
 
+
 %token <std::string>    STRING  "string"
 %token <std::string>    ID      "identifier"
 %token <int>            INTEGER "integer"
 %token EOF 0 "end-of-file"
 %token EOL "end-of-line"
 
+%printer { yyo << $$; } <int>;
+
+
+%left "|"
+%left "&"
+%precedence "<=" ">=" "=" "<>" "<" ">"
+%left "+" "-"
+%left "*" "/"
+
+
 
 %%
 
-/*
-program : int | str | id | program EOL ;
-int : INTEGER ;
-str : STRING ;
-id  : ID ;
-*/
-
+//good
 program :
     exp
   | decs;
 
 
 exp :
-    "nil"
-  | int
-  | str
+//good
+	"nil"
+  	| int
+  	| STRING
 
-  | type-id "[" exp "]" "of" exp
-  | type-id "{" array_rec "}"
+//good
+  	| type-id "[" exp "]" "of" exp
+  	| type-id "{" array_rec "}"
+  	| "new" type-id
+	| lvalue
+  	| type-id "(" func_call ")"
+  	| lvalue "." type-id "(" func_call ")"
+	| "-" exp
+	| exp op exp
+	| "(" exps ")"
+	| lvalue ":=" exp
+	| "if" exp "then" exp ctrl_else
+| 	"while" exp "do" exp
+	| "for" type-id ":=" exp "to" exp "do" exp
+  	| "break"
+  	| "let" decs "in" exps "end" ;
 
-  | "new" type-id
+ctrl_else :
+    "else" exp
+    | %empty ;
 
-  | lvalue
+func_call :
+    exp func_call_bis
+    | %empty ;
 
-  | id "("  exp  method_rec  ")"
-
-  | lvalue "." id "("  exp  method_rec  ")"
-
-  | "-" exp
-
-  | exp op exp
-
-  | "(" exps ")"
-  | lvalue ":=" exp
-  | "if" exp "then" exp "else" exp
-  | "while" exp "do" exp
-  | "for" id ":=" exp "to" exp "do" exp
-  | "break"
-  | "let" decs "in" exps "end" ;
+func_call_bis :
+    "," exp func_call_bis
+    | %empty ;
 
 arr_rec_bis :
-    "," id "=" exp arr_rec_bis
+    "," type-id "=" exp arr_rec_bis
   | %empty ;
 
 array_rec :
-    id "=" exp arr_rec_bis
+    type-id "=" exp arr_rec_bis
   	| %empty ;
 
-method_rec :
-	"," exp method_rec
-	| %empty ;
 
+lvalue : type-id
+ 	| lvalue "." type-id
+  	| lvalue "[" exp "]" ;
 
-lvalue : id
-  | lvalue "." id
-  | lvalue "[" exp "]" ;
-
-exps : exp exps_rec ;
+exps : exps_rec ;
 
 exps_rec :
-	";" exp exps
-	| %empty
+	exp exps_bis
+  	| %empty ;
 
-decs : dec
-	| %empty
+exps_bis :
+	";" exp exps_bis
+	| %empty ;
+
+decs : dec decs
+	| %empty ;
 
 dec :
-    "type" id "=" ty
-  | "class" id  "extends" type-id  "{" classfields "}"
+    "type" type-id "=" ty
+  | "class" type-id  extend_rec  "{" classfields "}"
   | vardec
-  | "function" id "(" tyfields ")"  ":" type-id  "=" exp
-  | "primitive" id "(" tyfields ")"  ":" type-id
-  | "import" str ;
+  | "function" type-id "(" tyfields ")"  type_rec  "=" exp
+  | "primitive" type-id "(" tyfields ")"  type_rec
+  | "import" STRING ;
 
-vardec : "var" id  ":" type-id  ":=" exp ;
+extend_rec : "extends" type-id
+	| %empty ;
 
+type_rec : ":" type-id
+	| %empty ;
 
-classfields :  classfield
+vardec : "var" type-id  type_rec ":=" exp ;
+
+classfields :  classfield classfields
+	| %empty ;
+
 classfield :
     vardec
-  | "method" id "(" tyfields ")"  ":" type-id  "=" exp
+  | "method" type-id "(" tyfields ")"  type_rec  "=" exp ;
 
 ty :
      type-id
-   | "{" tyfields  "}"
+   | "{" tyfields "}"
    | "array" "of" type-id
-   | "class" "extends" type-id "{" classfields "}"
-tyfields :  id ":" type-id  "," id ":" type-id
+   | "class" extend_rec "{" classfields "}" ;
 
-type-id :
-        id
+tyfields :  "id" ":" type-id id_type_rec
+	| %empty ;
 
+id_type_rec :  "," type-id ":" type-id id_type_rec
+	| %empty ;
+
+type-id : ID ;
 int : INTEGER ;
-str : STRING ;
-id  : ID ;
-
-op : "+" | "-" | "*" | "/" | "=" | "<>" | ">" | "<" | ">=" | "<=" | "&" | "|"
+op : "+" | "-" | "*" | "/" | "=" | "<>" | ">" | "<" | ">=" | "<=" | "&" | "|" ;
 
 
 %%
