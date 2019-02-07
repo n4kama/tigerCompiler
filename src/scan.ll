@@ -17,9 +17,9 @@ id [a-zA-Z][0-9a-zA-Z_]*
 
 %%
 [ \t\n]+        ;
-{id}            return yy.parser::make_ID(yytext);
-{string}        return yy.parser::make_STRING(std::string(yytext + 1, yyleng - 2));
-{integer}       return yy.parser::make_INTEGER(atoi(yytext));
+{id}            return yy::parser::make_ID(yytext);
+{string}        return yy::parser::make_STRING(std::string(yytext + 1, yyleng - 2));
+{integer}       return yy::parser::make_INTEGER(atoi(yytext));
 
 
 ","             return yy::parser::make_COMMA
