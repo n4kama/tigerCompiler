@@ -70,7 +70,18 @@ exp :
 	| type-id "(" func_call ")"
  	| lvalue "." type-id "(" func_call ")"
 	| "-" exp
-	| exp op exp
+	| exp "+" exp
+    | exp "-" exp
+    | exp "*" exp
+    | exp "/" exp
+    | exp "=" exp
+    | exp "<>" exp
+    | exp ">" exp
+    | exp "<" exp
+    | exp ">=" exp
+    | exp "<=" exp
+    | exp "&" exp
+    | exp "|" exp
 	| "(" exps ")"
 	| lvalue ":=" exp
   | "if" exp "then" exp %prec NOT_ELSE
@@ -153,8 +164,6 @@ id_type_rec :  "," type-id ":" type-id id_type_rec
 
 type-id : ID ;
 int : INTEGER ;
-op : "+" | "-" | "*" | "/" | "=" | "<>" | ">" | "<" | ">=" | "<=" | "&" | "|" ;
-
 
 %%
 
