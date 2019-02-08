@@ -8,6 +8,8 @@ To do of the tiger project
 
 [  ] Error class     (mandatory)
 
+[  ] src/parse/tiger-parser.cc ?
+
 [  ] Autotools       (mandatory)
     [  ] AUTHORS.txt
     [  ] customize the configure.ac
