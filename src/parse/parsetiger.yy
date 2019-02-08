@@ -27,92 +27,88 @@
     int yyparse();
 %}
 
-
 %token <std::string>    STRING  "string"
 %token <std::string>    ID      "identifier"
 %token <int>            INTEGER "integer"
 %token EOF 0 "end-of-file"
 %token EOL "end-of-line"
+%token <std::string> LPAR RPAR LBRACE RBRACE LBRACKET RBRACKET DOT OF NEW IF
+       THEN ELSE WHILE DO FOR TO NIL BREAK LET IN END TYPE COMMA
+       SEMICOLON COLON CLASS FUNCTION PRIMITIVE IMPORT EXTENDS VAR METHOD ARRAY
+       PLUS MINUS TIMES DIVIDE LT GT LE GE ASSIGN EQ NEQ AND OR
 
 %printer { yyo << $$; } <int>;
 
-%nonassoc ":="
-%left "|"
-%left "&"
-%nonassoc "<=" ">=" "=" "<>" "<" ">"
-%left "+" "-"
-%left "*" "/"
-%left "."
-%nonassoc "of"
-%nonassoc "do"
+%nonassoc ASSIGN
+%left OR
+%left AND
+%nonassoc LT GT EQ NEQ LE GE
+%left PLUS MINUS
+%left TIMES DIVIDE
+%left DOT
+%nonassoc OF
+%nonassoc DO
 %nonassoc NOT_ELSE
-%nonassoc "else"
+%nonassoc ELSE
 
 %%
 
-//good
 program :
     exp
   | decs;
 
 
-exp :
-//good
-	"nil"
- 	| int
+exp : NIL
+ 	| INTEGER
  	| STRING
-
-//good
- 	| lvalue_left "of" exp
- 	| type-id "{" array_rec "}"
- 	| "new" type-id
+ 	| lvalue_left OF exp
+ 	| type-id LBRACE array_rec RBRACE
+ 	| NEW type-id
   | lvalue
-	| type-id "(" func_call ")"
- 	| lvalue "." type-id "(" func_call ")"
-	| "-" exp
-	| exp "+" exp
-    | exp "-" exp
-    | exp "*" exp
-    | exp "/" exp
-    | exp "=" exp
-    | exp "<>" exp
-    | exp ">" exp
-    | exp "<" exp
-    | exp ">=" exp
-    | exp "<=" exp
-    | exp "&" exp
-    | exp "|" exp
-	| "(" exps ")"
-	| lvalue ":=" exp
-  | "if" exp "then" exp %prec NOT_ELSE
-	| "if" exp "then" exp "else" exp
-  | "while" exp "do" exp
-	| "for" type-id ":=" exp "to" exp "do" exp
-	| "break"
-  | "let" decs "in" exps "end" ;
+	| type-id LPAR func_call RPAR
+ 	| lvalue DOT type-id LPAR func_call RPAR
+	| MINUS exp
+	| exp PLUS exp
+    | exp MINUS exp
+    | exp TIMES exp
+    | exp DIVIDE exp
+    | exp EQ exp
+    | exp NEQ exp
+    | exp GT exp
+    | exp LT exp
+    | exp GE exp
+    | exp LE exp
+    | exp AND exp
+    | exp OR exp
+	| LPAR exps RPAR
+	| lvalue ASSIGN exp
+  | IF exp THEN exp %prec NOT_ELSE
+	| IF exp THEN exp ELSE exp
+  | WHILE exp DO exp
+	| FOR type-id ASSIGN exp TO exp DO exp
+	| BREAK
+  | LET decs IN exps END ;
 
 
-func_call :
-    exp func_call_bis
-    | %empty ;
+func_call : exp func_call_bis | %empty ;
 
 func_call_bis :
-    "," exp func_call_bis
+    COMMA exp func_call_bis
     | %empty ;
 
 arr_rec_bis :
-    "," type-id "=" exp arr_rec_bis
+    COMMA type-id EQ exp arr_rec_bis
     | %empty ;
 
 array_rec :
-    type-id "=" exp arr_rec_bis
+    type-id EQ exp arr_rec_bis
   	| %empty ;
 
 lvalue : type-id
- 	  | lvalue "." type-id
+ 	  | lvalue DOT type-id
   	| lvalue_left ;
 
-lvalue_left : lvalue "[" exp "]" ;
+lvalue_left : lvalue LBRACKET exp RBRACKET ;
 
 exps : exps_rec ;
 
@@ -121,56 +117,55 @@ exps_rec :
   	| %empty ;
 
 exps_bis :
-	";" exp exps_bis
+	SEMICOLON exp exps_bis
 	  | %empty ;
 
 decs : dec decs
 	  | %empty ;
 
 dec :
-    "type" type-id "=" ty
-    | "class" type-id  extend_rec  "{" classfields "}"
+    TYPE type-id EQ ty
+    | CLASS type-id  extend_rec  LBRACE classfields RBRACE
     | vardec
-    | "function" type-id "(" tyfields ")"  type_rec  "=" exp
-    | "primitive" type-id "(" tyfields ")"  type_rec
-    | "import" STRING ;
+    | FUNCTION type-id LPAR tyfields RPAR  type_rec  EQ exp
+    | PRIMITIVE type-id LPAR tyfields RPAR  type_rec
+    | IMPORT STRING ;
 
-extend_rec : "extends" type-id
+extend_rec : EXTENDS type-id
 	  | %empty ;
 
-type_rec : ":" type-id
+type_rec : COLON type-id
 	  | %empty ;
 
-vardec : "var" type-id  type_rec ":=" exp ;
+vardec : VAR type-id  type_rec ASSIGN exp ;
 
 classfields :  classfield classfields
 	  | %empty ;
 
 classfield :
     vardec
-  | "method" type-id "(" tyfields ")"  type_rec  "=" exp ;
+  | METHOD type-id LPAR tyfields RPAR  type_rec  EQ exp ;
 
 ty :
      type-id
-   | "{" tyfields "}"
-   | "array" "of" type-id
-   | "class" extend_rec "{" classfields "}" ;
+   | LBRACE tyfields RBRACE
+   | ARRAY OF type-id
+   | CLASS extend_rec LBRACE classfields RBRACE ;
 
-tyfields :  "id" ":" type-id id_type_rec
+tyfields :  type-id COLON type-id id_type_rec
 	| %empty ;
 
-id_type_rec :  "," type-id ":" type-id id_type_rec
+id_type_rec : COMMA type-id COLON type-id id_type_rec
 	| %empty ;
 
-type-id : ID ;
-int : INTEGER ;
+type-id : ID;
 
 %%
 
 void yy::parser::error(const location_type& loc, const std::string& err)
 {
     err_nb += 1;
-    std::cerr << "line: " << loc << ", yyerror: " << err << '\n';
+    std::cerr << "line: " << loc << ", c'est un scandale, sah jsuis anéanti, quelle vie...: " << err << '\n';
 }
 
 int main(int argc, char *argv[])
