@@ -1,0 +1,5 @@
+let
+in
+    print_int (20);
+    print ("\n")
+end
