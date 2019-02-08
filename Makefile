@@ -1,6 +1,6 @@
 all:
-	flex -o src/scan.cc src/scan.ll
-	bison -d -o src/parse.cc src/parse.yy
-	g++ -o tc -std=c++17 src/scan.cc src/parse.cc
+	flex -o src/parse/scan.cc src/parse/scan.ll
+	bison -d -o src/parse/parse.cc src/parse/parse.yy
+	g++ -o tc -std=c++17 src/parse/scan.cc src/parse/parse.cc
 clean:
-	$(RM) tc src/scan.cc src/parse.cc src/parse.hh src/position.hh src/stack.hh
+	$(RM) tc src/parse/scan.cc src/parse/parse.cc src/parse/parse.hh src/parse/position.hh src/parse/stack.hh
