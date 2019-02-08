@@ -70,8 +70,6 @@ id [a-zA-Z][0-9a-zA-Z_]*|"_main"
 
 {int}       {
                 int val = strtol(yytext, nullptr, 0);
-                if (! (-2147483648 <= val && val <= 2147483647 && errno != ERANGE))
-                    throw yy::parser::error (loc, "integer is out of range");
                 return yy::parser::make_INTEGER(val, loc);
             };
 {string}    return yy::parser::make_STRING(yytext, loc);
