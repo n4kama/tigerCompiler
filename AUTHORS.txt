@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 zachary.fakir
 amine.heffar
 romain.baguet
 rayane.amrouche
+=======
+FIXME: Who art thou?
+>>>>>>> 2021-tc-base-1.0
