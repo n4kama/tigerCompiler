@@ -1,3 +1,16 @@
-TODO :
+To do of the tiger project
 
-[  ]
+[  ] Unique class    (mandatory)
+
+[  ] Symbol class    (mandatory)
+
+[  ] Variant class   (mandatory)
+
+[  ] Error class     (mandatory)
+
+[  ] Autotools       (mandatory)
+    [  ] make check
+    [  ] make distcheck
+
+[  ] Test suite
+    [ ] Test program (mandatory)
