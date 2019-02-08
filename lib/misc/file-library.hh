@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <boost/filesystem.hpp>
+#include <experimental/filesystem>
 #include <string>
 #include <vector>
 
@@ -13,7 +13,7 @@
 namespace misc
 {
 
-  using path = boost::filesystem::path;
+  using path = std::experimental::filesystem::path;
 
   /** \brief Manage search path.
 
@@ -94,8 +94,8 @@ namespace misc
   std::ostream&
   operator<<(std::ostream& ostr, const file_library& l);
 
-  boost::filesystem::path
-  operator+(boost::filesystem::path& p1, boost::filesystem::path& p2);
+  std::experimental::filesystem::path
+  operator+(std::experimental::filesystem::path& p1, std::experimental::filesystem::path& p2);
 
 } // namespace misc
 

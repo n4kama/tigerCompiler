@@ -113,7 +113,7 @@ namespace misc
     if (directory.is_absolute())
       {
         // If file is absolute, just check that it exists.
-        if (!std::filesystem::exists(path(file)))
+        if (!std::experimental::filesystem::exists(path(file)))
           return path();
       }
     else
@@ -132,7 +132,7 @@ namespace misc
   file_library::find_in_directory(const path& dir,
                                   const std::string& file) const
   {
-    return std::filesystem::exists(path(dir / file));
+    return std::experimental::filesystem::exists(path(dir / file));
   }
 
   path

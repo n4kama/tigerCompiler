@@ -25,11 +25,6 @@
 #include <parse/parsetiger.hh>
 #include <parse/tiger-parser.hh>
 
-#include "parsetiger.hh"
-yy::parser::location_type loc;
-#include <iostream>
-#define YY_USER_ACTION
-
 // Convenient shortcuts.
 #define TOKEN_VAL(Type, Value)                  \
   parser::make_ ## Type(Value, tp.location_)
