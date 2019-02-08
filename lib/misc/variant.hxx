@@ -6,6 +6,7 @@
 #pragma once
 
 #include <variant>
+#include <iostream>
 
 #include <misc/variant.hh>
 #include <type_traits>

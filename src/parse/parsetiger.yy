@@ -30,8 +30,6 @@
    misc::unique).  */
 %define filename_type {const std::string}
 %locations
-%parse-param {int& res}
-%param {int& err_nb}
 
 // The parsing context.
 %param { ::parse::TigerParser& tp }
@@ -156,6 +154,7 @@
        WHILE        "while"
        EOF 0        "end of file"
 
+%token DECS         "_decs"
 
   // FIXME: Some code was deleted here (Priorities/associativities).
 %nonassoc ASSIGN
@@ -288,36 +287,8 @@ type-id : ID;
 | Declarations.  |
 `---------------*/
 
-%token DECS "_decs";
-decs:
-  %empty
-  // FIXME: Some code was deleted here (More rules).
-%%
-
-void yy::parser::error(const location_type& loc, const std::string& err)
+void
+parse::parser::error(const location_type& l, const std::string& m)
 {
-    err_nb += 1;
-    std::cerr << "line: " << loc << ", c'est un scandale, sah jsuis anéanti, quelle vie...: " << err << '\n';
-}
-
-int main(int argc, char *argv[])
-{
-  	auto res = 0;
-  	auto err = 0;
-  	yy::parser parser(res, err);
-
-  	if (getenv("SCAN"))
-    {
-      	yy_flex_debug = 1;
-    }
-
-	if (getenv("PARSE"))
-    	parser.set_debug_level(1);
-
-	for(int i = 1; i < argc; i++)
-	{
-		yyin = fopen(argv[1],"r");
-  		parser.parse();
-	}
-  	return 0;
+  std::cerr << l << ": " << m << std::endl;
 }
