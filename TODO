@@ -9,7 +9,9 @@ To do of the tiger project
 [  ] Error class     (mandatory)
 
 [  ] Autotools       (mandatory)
+    [  ] AUTHORS.txt
     [  ] customize the configure.ac
+    [  ] Makefile.am
     [  ] make check
     [  ] make distcheck
 
