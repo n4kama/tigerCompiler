@@ -291,5 +291,5 @@ void
 parse::parser::error(const location_type& loc, const std::string& err)
 {
   tp.error_ << misc::error::error_type::parse << loc << ": " << err
-  << '\n' << &misc::error::exit;
+  << '\n';
 }

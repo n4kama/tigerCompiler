@@ -62,6 +62,7 @@ id [a-zA-Z][0-9a-zA-Z_]*|"_main"
 %{
   tp.location_.step();
 %}
+  tp.location_.step();
 
  /* The rules.  */
 
@@ -159,9 +160,13 @@ id [a-zA-Z][0-9a-zA-Z_]*|"_main"
               grown_string.append(1, strtol(yytext + 2, 0, 16));
           }
 
-      . {
-              grown_string.append(yytext);
-      }
+      "\\a"
+      "\\b"
+      "\\f"
+      "\\n"
+      "\\r"
+      "\\t"
+      "\\v"
 
       "\\\"" {
         grown_string.append("\\\"");
@@ -177,6 +182,10 @@ id [a-zA-Z][0-9a-zA-Z_]*|"_main"
           << &misc::error::exit;
       }
 
+      . {
+              grown_string.append(yytext);
+      }
+
       <<EOF>> {
           tp.error_ << misc::error::error_type::scan << tp.location_
           << ": Unexpected end of file in string :" << yytext << '\n'
@@ -185,13 +194,14 @@ id [a-zA-Z][0-9a-zA-Z_]*|"_main"
 }
 
 
-"\n"        tp.location_.lines(yyleng);
-[ \t]+      ;
+(\n|\r|\n\r|\r\n)   tp.location_.lines(yyleng);
+[ \t]       tp.location_.step();
 <<EOF>>     return TOKEN(EOF);
 
 .           {
                 tp.error_ << misc::error::error_type::scan << tp.location_
-                << ": Unexpected char: " << yytext << '\n' << &misc::error::exit;
+                << ": Unexpected character : " << yytext << '\n'
+                << &misc::error::exit;
             }
 %%
 
