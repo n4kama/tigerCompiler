@@ -178,7 +178,7 @@ id [a-zA-Z][0-9a-zA-Z_]*|"_main"
 
       "\\". {
           tp.error_ << misc::error::error_type::scan << tp.location_
-          << ": Unexpected escaped character" << '\n'
+          << ": Unexpected escaped character: " << yytext << '\n'
           << &misc::error::exit;
       }
 
@@ -188,7 +188,7 @@ id [a-zA-Z][0-9a-zA-Z_]*|"_main"
 
       <<EOF>> {
           tp.error_ << misc::error::error_type::scan << tp.location_
-          << ": Unexpected end of file in a string" << '\n'
+          << ": Unexpected end of file in a string: " << yytext << '\n'
           << &misc::error::exit;
       }
 }
