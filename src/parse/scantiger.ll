@@ -36,6 +36,9 @@
 // Flex uses `0' for end of file.  0 is not a token_type.
 #define yyterminate() return TOKEN(EOF)
 
+std::string grown_string = std::string();
+int depth = 0;
+
 # define CHECK_EXTENSION()                              \
   do {                                                  \
     if (!tp.enable_extensions_p_)                       \
@@ -57,15 +60,10 @@ id [a-zA-Z][0-9a-zA-Z_]*|"_main"
 
 %%
 %{
-  // FIXME: Some code was deleted here (Local variables).
-
-  // Each time yylex is called.
   tp.location_.step();
 %}
 
  /* The rules.  */
-
-    loc.step();
 
 "("         return TOKEN(LPAR);
 ")"         return TOKEN(RPAR);
@@ -86,7 +84,7 @@ id [a-zA-Z][0-9a-zA-Z_]*|"_main"
 "nil"       return TOKEN(NIL);
 "break"     return TOKEN(BREAK);
 "let"       return TOKEN(LET);
-"in"        return TOKEN(END);
+"in"        return TOKEN(IN);
 "end"       return TOKEN(END);
 "type"      return TOKEN(TYPE);
 ","         return TOKEN(COMMA);
@@ -117,16 +115,48 @@ id [a-zA-Z][0-9a-zA-Z_]*|"_main"
 
 
 {int}       {
-                int val = strtol(yytext, nullptr, 0);
+                int val = std::atoi(yytext);
+                if(val < 0)
+                {
+                  tp.error_ << misc::error::error_type::scan
+                  << "The value is out of integer range: "
+                  << yytext << '\n' << &misc::error::exit;
+                }
                 return TOKEN_VAL(INTEGER, val);
             };
-{string}    return TOKEN_VAL(STRING, yytext);
 {id}        return TOKEN_VAL(ID, yytext);
 
-"\n"        loc.lines(yyleng); loc.step();
-[ \t]+      loc.step(); continue;
+
+"/*"        {depth++; BEGIN(SC_COMMENT); }
+<SC_COMMENT>{
+              "/*" { depth++; }
+
+              <<EOF>> {
+                        tp.error_ << misc::error::error_type::scan
+                          << "Unterminated comment" << std::endl
+                          << &misc::error::exit;
+                      }
+
+              "*/"  {
+                      depth--;
+                      if (depth == 0)
+                        BEGIN(INITIAL);
+                    }
+
+              .     {}
+            }
+
+{string}    return TOKEN_VAL(STRING, yytext);
+
+
+"\n"        tp.location_.lines(yyleng);
+[ \t]+      ;
 <<EOF>>     return TOKEN(EOF);
-.           std::cerr << "Lexing error : " << yytext << '\n';
+
+.           {
+                tp.error_ << "Unexpected character: " << yytext << '\n'
+                << &misc::error::exit;
+            }
 %%
 
 // Do not use %option noyywrap, because then flex generates the same

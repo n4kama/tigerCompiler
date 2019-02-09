@@ -62,7 +62,7 @@
   # define YY_DECL YY_DECL_(yyFlexLexer::)
 }
 
-%printer { yyo << $$; } <int> <std::string> <misc::symbol>;
+%printer { debug_stream() << $$; } <int> <std::string> <misc::symbol>;
 
 %token <std::string>    STRING     "string"
 %token <misc::symbol>   ID         "identifier"
@@ -288,7 +288,8 @@ type-id : ID;
 `---------------*/
 
 void
-parse::parser::error(const location_type& l, const std::string& m)
+parse::parser::error(const location_type& loc, const std::string& err)
 {
-  std::cerr << l << ": " << m << std::endl;
+  tp.error_ << misc::error::error_type::parse << loc << ": " << err
+  << '\n' << &misc::error::exit;
 }
