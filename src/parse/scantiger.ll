@@ -162,6 +162,26 @@ id [a-zA-Z][0-9a-zA-Z_]*|"_main"
       . {
               grown_string.append(yytext);
       }
+
+      "\\\"" {
+        grown_string.append("\\\"");
+      }
+
+      "\\\\" {
+        grown_string.append("\\\\");
+      }
+
+      "\\". {
+          tp.error_ << misc::error::error_type::scan << tp.location_
+          << ": Unexpected escaped character :" << yytext << '\n'
+          << &misc::error::exit;
+      }
+
+      <<EOF>> {
+          tp.error_ << misc::error::error_type::scan << tp.location_
+          << ": Unexpected end of file in string :" << yytext << '\n'
+          << &misc::error::exit;
+      }
 }
 
 
