@@ -32,6 +32,7 @@
 #define TOKEN(Type)                             \
   parser::make_ ## Type(tp.location_)
 
+#define YY_USER_ACTION tp.location_.columns(yyleng);
 
 // Flex uses `0' for end of file.  0 is not a token_type.
 #define yyterminate() return TOKEN(EOF)
@@ -62,7 +63,6 @@ id [a-zA-Z][0-9a-zA-Z_]*|"_main"
 %{
   tp.location_.step();
 %}
-  tp.location_.step();
 
  /* The rules.  */
 
@@ -195,7 +195,7 @@ id [a-zA-Z][0-9a-zA-Z_]*|"_main"
 
 
 (\n|\r|\n\r|\r\n)   tp.location_.lines(yyleng);
-[ \t]       tp.location_.step();
+[ \t]       ;
 <<EOF>>     return TOKEN(EOF);
 
 .           {

@@ -10,16 +10,16 @@ _____________________________________________________________________________
 [X] Scantiger.ll
 [X] Scanner completed to read strings, identifiers etc
 [X] Track locations
-[ ] Correct errors messages
-[ ] Eorros location fix colomuns
+[X] Correct errors messages
+[X] Eorros location fix colomuns
 _____________________________________________________________________________
 
 [X] Autotools       (mandatory)
 [X] AUTHORS.txt
 [X] Customize the configure.ac
 [X] Makefile.am
-[ ] make check
-[ ] make distcheck
+[X] make check
+[X] make distcheck
 _____________________________________________________________________________
 
 [X] Unique class    (mandatory)
@@ -29,5 +29,5 @@ _____________________________________________________________________________
 [X] Error class     (mandatory)
 _____________________________________________________________________________
 
-[ ] Test suite
-[ ] Test program in python (mandatory)
+[X] Test suite
+[X] Test program in python (mandatory)
