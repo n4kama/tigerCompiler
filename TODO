@@ -1,33 +1,32 @@
-To do of the tiger project:
+TODO of the tiger project:
 _____________________________________________________________________________
 
-[ ] Parser    (mandatory)
-[ ] tiger-parser.cc
-[ ] implementation of TigerParser class
-[ ] parsetiger.yy
-[ ] grammar complete but without actions
-[ ] implement --parse-trace support for terminals (use %printer)
-[ ] scantiger.ll
-[ ] scanner completed to read strings, identifiers etc
-[X] track locations
+[X] Parser    (mandatory)
+[X] Tiger-parser.cc
+[X] Implementation of TigerParser class
+[X] Parsetiger.yy
+[X] Grammar complete but without actions
+[ ] Implement --parse-trace support for terminals (use %printer)
+[X] Scantiger.ll
+[X] Scanner completed to read strings, identifiers etc
+[X] Track locations
+[ ] Correct errors messages
+[ ] Eorros location fix colomuns
 _____________________________________________________________________________
 
 [X] Autotools       (mandatory)
-[ ] AUTHORS.txt
-[ ] customize the configure.ac
+[X] AUTHORS.txt
+[X] Customize the configure.ac
 [X] Makefile.am
 [ ] make check
 [ ] make distcheck
 _____________________________________________________________________________
 
-[ ] Unique class    (mandatory)
-
+[X] Unique class    (mandatory)
 [X] Symbol class    (mandatory)
-
-[ ] Variant class   (mandatory)
+[X] Variant class   (mandatory)
 [X] variant<T, Ts...>::operator const U&() const
-
-[ ] Error class     (mandatory)
+[X] Error class     (mandatory)
 _____________________________________________________________________________
 
 [ ] Test suite
