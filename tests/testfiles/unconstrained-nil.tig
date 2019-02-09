@@ -1,0 +1,5 @@
+/* error : initializing nil expressions not constrained by record type */
+let var a := nil
+in
+  0
+end

@@ -1,0 +1,6 @@
+let
+
+in
+print_int(21);
+print("\n")
+end

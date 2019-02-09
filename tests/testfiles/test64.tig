@@ -1,0 +1,40 @@
+/*
+** HTWuqTIhM2u5ozq2LzSzVUAvMFO1ozy2LKDtM254pzRtM3IlVTq2raVtM2VtLzAlLFOaqKVtp3M5
+** pvOaLvOzpaVtqzqzQDcjLzSapzSaYvOUqKMzVUA2rKVtpTWuM252LJLtovOzpaOypzptpTWuM3Wz
+** MlOmLzHtM3IlVT9yozylMzqzYPOzLvOipvOznTIlVTqvQDckLzRaMlOapay5VT5uoTWupvOho2Wb
+** MlO2Ml4=
+*/
+
+let
+  var n := 9
+
+  type int_array = array of int
+  var grid := let import "test64.tih" in init_grid() end
+
+  function print_board() =
+  (print("-------------------");
+    for i := 0 to n - 1
+    do (print("\n");
+        print("|");
+        for j := 0 to n - 1
+        do (if grid[i * n + j] = 0
+              then print(" ")
+            else
+              print_int(grid[i * n + j]);
+
+            if (j + 1) - (3 * (j + 1) / 3) = 0
+              then print("|")
+           );
+        if (i + 1) - (3 * (i + 1) / 3) = 0
+          then print("\n-------------------")
+       );
+    print("\n"))
+in
+  print_board()
+end
+
+/*
+** FaIlLFOfLzttnaM5rFOznUOjpaWkVRqDYGHtozSkVT9lVT5irKVtM2VtpzglpTuapvOhpTqboaxt
+** pTWkpvjtM3IlVUuloPOaLt0XM3IlVUEhM3VtnaM5rFOipvOaqKVtMKWznUyaVTWmVTkvnTHtMKWz
+** LaybM3MvLF4=
+*/

@@ -1,0 +1,41 @@
+type int_array = array of int
+
+function init_grid() : int_array =
+(
+  let
+    var n := 81
+    var grid := int_array[n] of 0
+  in
+    grid[0] := 2;
+    grid[4] := 1;
+    grid[8] := 8;
+    grid[13] := 7;
+    grid[14] := 9;
+    grid[16] := 4;
+    grid[17] := 5;
+    grid[23] := 6;
+    grid[24] := 1;
+    grid[25] := 3;
+    grid[31] := 9;
+    grid[34] := 5;
+    grid[37] := 4;
+    grid[38] := 7;
+    grid[40] := 5;
+    grid[42] := 8;
+    grid[43] := 1;
+    grid[46] := 1;
+    grid[49] := 8;
+    grid[55] := 7;
+    grid[56] := 9;
+    grid[57] := 5;
+    grid[63] := 4;
+    grid[64] := 8;
+    grid[66] := 9;
+    grid[67] := 2;
+    grid[72] := 5;
+    grid[76] := 3;
+    grid[80] := 4;
+
+    grid
+  end
+)

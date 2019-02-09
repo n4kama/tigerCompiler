@@ -1,0 +1,7 @@
+/* valid rec comparisons */
+let
+ type rec = { id : int}
+in
+  rec { id = 0 } = nil;
+  rec { id = 0 } <> nil
+end
