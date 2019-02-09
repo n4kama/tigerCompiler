@@ -31,7 +31,7 @@ def exec_test(filename):
         print(txtcolors.FAIL + "KO (with error code : " + str(bash_retval) + ")" + txtcolors.ENDC)
         print("tc output : ", end='')
         print(str(bash_err, "utf-8"))
-    print()
+        print()
 
 # PROGRAM START
 
