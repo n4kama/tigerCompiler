@@ -118,8 +118,8 @@ id [a-zA-Z][0-9a-zA-Z_]*|"_main"
                 int val = std::atoi(yytext);
                 if(val < 0)
                 {
-                  tp.error_ << misc::error::error_type::scan
-                  << "The value is out of integer range: "
+                  tp.error_ << misc::error::error_type::scan << tp.location_
+                  << ": " << "The value is out of integer range: "
                   << yytext << '\n' << &misc::error::exit;
                 }
                 return TOKEN_VAL(INTEGER, val);
@@ -132,9 +132,8 @@ id [a-zA-Z][0-9a-zA-Z_]*|"_main"
               "/*" { depth++; }
 
               <<EOF>> {
-                        tp.error_ << misc::error::error_type::scan
-                          << "Unterminated comment" << std::endl
-                          << &misc::error::exit;
+                        tp.error_ << misc::error::error_type::scan << tp.location_
+                        << ": " << "Unterminated comment" << '\n' << &misc::error::exit;
                       }
 
               "*/"  {
@@ -146,7 +145,24 @@ id [a-zA-Z][0-9a-zA-Z_]*|"_main"
               .     {}
             }
 
-{string}    return TOKEN_VAL(STRING, yytext);
+
+
+"\""          grown_string.clear(); BEGIN SC_STRING;
+
+<SC_STRING>{ /* Handling of the strings.  Initial " is eaten. */
+     "\"" {
+              BEGIN INITIAL;
+              return TOKEN_VAL(STRING, grown_string);
+          }
+
+     \\x[0-9a-fA-F]{2}  {
+              grown_string.append(1, strtol(yytext + 2, 0, 16));
+          }
+
+      . {
+              grown_string.append(yytext);
+      }
+}
 
 
 "\n"        tp.location_.lines(yyleng);
@@ -154,8 +170,8 @@ id [a-zA-Z][0-9a-zA-Z_]*|"_main"
 <<EOF>>     return TOKEN(EOF);
 
 .           {
-                tp.error_ << "Unexpected character: " << yytext << '\n'
-                << &misc::error::exit;
+                tp.error_ << misc::error::error_type::scan << tp.location_
+                << ": Unexpected char: " << yytext << '\n' << &misc::error::exit;
             }
 %%
 
