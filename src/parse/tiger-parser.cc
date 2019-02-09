@@ -95,9 +95,12 @@ namespace parse
                  << strerror(errno) << std::endl
                  << &misc::error::exit;
       }
-
-    scanner_->scan_open_(*in);
     parser parser(*this);
+    if(scan_trace_p_)
+      scanner_->set_debug(1);
+    if(parse_trace_p_)
+      parser.set_debug_level(1);
+    scanner_->scan_open_(*in);
     parser.parse();
         ast_type res = ast_;
     ast_ = static_cast<ast::Exp*>(nullptr);
